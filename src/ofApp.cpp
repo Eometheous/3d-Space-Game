@@ -10,16 +10,32 @@ void ofApp::setup(){
     terrain.setScaleNormalization(false);
     lander.loadModel("spaceship/SpaceShipV2.fbx");
     
+    octree.create(terrain.getMesh(0), 20);
+
     // Set Lander Position at startup and have camera look at lander
-    lander.setPosition(0, 5, 0);
+    lander.setPosition(0, 2, 0);
     lander.setScaleNormalization(false);
     cam.setPosition(0, 10, 20);
     cam.lookAt(lander.getPosition());
+    
+    gui.setup();
+    gui.add(numOfLevelsToDisplay.setup("Number of Octree Levels", 10, 1, 20));
+    hideGUI = false;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    glm::vec3 min = lander.getSceneMin() + lander.getPosition();
+    glm::vec3 max = lander.getSceneMax() + lander.getPosition();
+    landerBounds = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
+    colBoxList.clear();
+    octree.intersect(landerBounds, octree.root, colBoxList);
+    
+    terrainNormalVec = ofVec3f(0,0,0);
+    for (int i = 0; i < colBoxList.size(); i++) {
+        terrainNormalVec += octree.mesh.getNormal(colBoxList.at(i).points.at(0));
+    }
+    terrainNormalVec.normalize().scale(10);
 }
 
 //--------------------------------------------------------------
@@ -34,9 +50,31 @@ void ofApp::draw(){
     terrain.drawFaces();
     lander.drawFaces();
     
+    if (!hideLanderBounds) {
+        ofNoFill();
+        ofSetColor(ofColor::white);
+        octree.drawBox(landerBounds);
+        // draw colliding boxes
+        //
+        ofSetColor(ofColor::red);
+        for (int i = 0; i < colBoxList.size(); i++) {
+            Octree::drawBox(colBoxList[i].box);
+        }
+        ofDrawLine(lander.getPosition(), terrainNormalVec + lander.getPosition());
+    }
+    if (displayOctree) {
+        ofNoFill();
+        ofSetColor(ofColor::white);
+        octree.draw(numOfLevelsToDisplay, 0);
+    }
+    
     ofDisableLighting();
     ofPopMatrix();
     cam.end();
+    
+    glDepthMask(false);
+    if (!hideGUI) gui.draw();
+    glDepthMask(true);
 
 }
 
@@ -47,7 +85,18 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    switch (key) {
+        case 'o':
+            displayOctree = !displayOctree;
+            break;
+        case 'h':
+            hideGUI = !hideGUI;
+            break;
+        case 'b':
+            hideLanderBounds = !hideLanderBounds;
+        default:
+            break;
+    }
 }
 
 //--------------------------------------------------------------
