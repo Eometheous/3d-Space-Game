@@ -28,5 +28,4 @@ class ofApp : public ofBaseApp{
     ofLight light;
     ofxAssimpModelLoader terrain, lander;
     
-		
 };

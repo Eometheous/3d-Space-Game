@@ -3,10 +3,18 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    // Set up lighting and load object models
     initLightingAndMaterials();
-    terrain.loadModel("geo/cs134_terrain.obj");
+    
+    terrain.loadModel("geo/terrain_modelV2.obj");
     terrain.setScaleNormalization(false);
-
+    lander.loadModel("spaceship/SpaceShipV2.fbx");
+    
+    // Set Lander Position at startup and have camera look at lander
+    lander.setPosition(0, 5, 0);
+    lander.setScaleNormalization(false);
+    cam.setPosition(0, 10, 20);
+    cam.lookAt(lander.getPosition());
 }
 
 //--------------------------------------------------------------
@@ -24,6 +32,7 @@ void ofApp::draw(){
     ofEnableLighting();
     
     terrain.drawFaces();
+    lander.drawFaces();
     
     ofDisableLighting();
     ofPopMatrix();
@@ -96,6 +105,9 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
+//--------------------------------------------------------------
+// Set up basic ambient lighting in GL
+//
 void ofApp::initLightingAndMaterials() {
 
     static float ambient[] =
