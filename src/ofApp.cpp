@@ -48,6 +48,15 @@ void ofApp::update(){
     }
     
     ship.integrate();
+    ship.landerExhaust.setPosition(ship.position - ofVec3f(0, 1.8, 0));
+    ship.landerExhaust.update();
+    
+    if (ship.bMoveUp || ship.bMoveDown || ship.bMoveLeft || ship.bMoveRight || ship.bMoveForward || ship.bMoveBackward || ship.bRotateClockwiseKeyDown || ship.bRotateCounterClockwiseKeyDown) {
+        ship.landerExhaust.spawningParticles = true;
+    }
+    else {
+        ship.landerExhaust.spawningParticles = false;
+    }
     
     glm::vec3 shipPos = ship.position;
     glm::vec3 shipHeading = ship.heading();
@@ -79,6 +88,8 @@ void ofApp::draw(){
     
     terrain.drawFaces();
     lander.drawFaces();
+    
+    ship.landerExhaust.draw();
     
     glm::vec3 pos = lander.getPosition();
     ofSetColor(ofColor::yellow);
