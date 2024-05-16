@@ -8,9 +8,10 @@
 #include "Particle.hpp"
 
 Particle::Particle() {
+    shader.load("shaders/shader");
+    
     age = 0;
     birthtime = ofGetElapsedTimeMillis() / 1000;
-    sprite.load("sprites/bullet.png");
     position = ofVec2f();
 }
 
@@ -20,12 +21,14 @@ void Particle::update() {
 }
 
 void Particle::draw() {
+    shader.begin();
     ofMatrix4x4 translation = ofMatrix4x4();
     translation.translate(position);
     
     ofPushMatrix();
     
     ofMultMatrix(translation);
-    sprite.draw(-ofVec2f(sprite.getWidth() / 2, sprite.getHeight() / 2), sprite.getWidth() , sprite.getHeight());
+    ofDrawSphere(position, .01);
     ofPopMatrix();
+    shader.end();
 }
