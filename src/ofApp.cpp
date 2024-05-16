@@ -38,6 +38,15 @@ void ofApp::update(){
     }
     terrainNormalVec.normalize().scale(10);
     
+    if (terrainNormalVec.length() > 0) {
+        ship.touchingGround = true;
+        ship.velocity = ofVec3f(0,0);
+        ship.applyForce = false;
+    }
+    else {
+        ship.touchingGround = false;
+    }
+    
     ship.integrate();
     
     glm::vec3 shipPos = ship.position;

@@ -43,6 +43,7 @@ public:
     bool bRotateCounterClockwiseKeyDown = false;
     glm::vec3 gravity;
     bool applyForce = false;
+    bool touchingGround = false;
     glm::vec3 turbulenceForce();
 
 };
