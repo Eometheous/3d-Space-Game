@@ -19,7 +19,6 @@ public:
     float age;
     float birthtime;
     
-    ofTexture sprite;
     ofShader shader;
     
     Particle();
