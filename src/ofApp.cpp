@@ -1,5 +1,5 @@
 #include "ofApp.h"
-#include "util.h"
+#include "Util.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -9,18 +9,18 @@ void ofApp::setup(){
     terrain.loadModel("geo/terrain_modelV2.obj");
     terrain.setScaleNormalization(false);
     lander.loadModel("spaceship/SpaceShipV2.fbx");
+    lander.setScaleNormalization(false);
     
     octree.create(terrain.getMesh(0), 20);
 
     // Set Lander Position at startup and have camera look at lander
-    lander.setPosition(0, 2, 0);
-    lander.setScaleNormalization(false);
     cam.setPosition(0, 10, 20);
     cam.lookAt(lander.getPosition());
     
     gui.setup();
     gui.add(numOfLevelsToDisplay.setup("Number of Octree Levels", 10, 1, 20));
     hideGUI = false;
+    
 }
 
 //--------------------------------------------------------------
@@ -36,6 +36,13 @@ void ofApp::update(){
         terrainNormalVec += octree.mesh.getNormal(colBoxList.at(i).points.at(0));
     }
     terrainNormalVec.normalize().scale(10);
+    
+    ship.integrate();
+    
+    glm::vec3 shipPos = ship.position;
+    glm::vec3 shipHeading = ship.heading();
+    lander.setPosition(shipPos.x, shipPos.y, shipPos.z);
+    lander.setRotation(0, ship.rotation, 0, 1, 0);
 }
 
 //--------------------------------------------------------------
@@ -49,6 +56,9 @@ void ofApp::draw(){
     
     terrain.drawFaces();
     lander.drawFaces();
+    
+    glm::vec3 pos = lander.getPosition();
+    ofSetColor(ofColor::yellow);
     
     if (!hideLanderBounds) {
         ofNoFill();
@@ -85,6 +95,8 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    
+    ship.keyPressed(key);
     switch (key) {
         case 'o':
             displayOctree = !displayOctree;
@@ -94,6 +106,7 @@ void ofApp::keyPressed(int key){
             break;
         case 'b':
             hideLanderBounds = !hideLanderBounds;
+            break;
         default:
             break;
     }
@@ -101,6 +114,11 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+    ship.keyReleased(key);
+    switch (key) {
+        default:
+            break;
+    }
 
 }
 
@@ -191,3 +209,4 @@ void ofApp::initLightingAndMaterials() {
 //    glEnable(GL_LIGHT1);
     glShadeModel(GL_SMOOTH);
 } 
+

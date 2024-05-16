@@ -42,4 +42,7 @@ class ofApp : public ofBaseApp{
     bool hideLanderBounds;
     vector<TreeNode> colBoxList;
     ofVec3f terrainNormalVec;
+
+	// SpaceShip object
+    SpaceShip ship;
 };
