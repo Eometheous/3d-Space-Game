@@ -7,6 +7,13 @@
 #include "SpaceShip.h"
 #include <glm/gtx/intersect.hpp>
 
+// Define camera views
+enum CameraView {
+    TRACKING_CAMERA,
+    ONBOARD_CAMERA,
+    EASY_CAM
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -60,4 +67,11 @@ class ofApp : public ofBaseApp{
     glm::vec3 dragPlanePoint;// Point on the drag plane
     glm::vec3 dragPlaneNormal;// Normal of the drag plane
     glm::vec3 getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm);
+    
+    // Cameras
+    ofEasyCam easyCam;
+    ofCamera trackingCam;
+    ofCamera onboardCam;
+    CameraView currentView = EASY_CAM; // Default view
+    void switchCameraView(CameraView view);
 };

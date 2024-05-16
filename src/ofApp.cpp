@@ -13,9 +13,15 @@ void ofApp::setup(){
     
     octree.create(terrain.getMesh(0), 20);
 
-    // Set Lander Position at startup and have camera look at lander
-    cam.setPosition(0, 10, 20);
-    cam.lookAt(lander.getPosition());
+    // Set Camera Positions
+    trackingCam.setPosition(0, 10, 20);
+    trackingCam.lookAt(lander.getPosition());
+    
+    onboardCam.setPosition(lander.getPosition() + glm::vec3(0, 1, 0));
+    onboardCam.lookAt(lander.getPosition() + glm::vec3(0, 1, 10));
+    
+    easyCam.setPosition(0, 10, 20); // EasyCam initial position
+    easyCam.lookAt(lander.getPosition());
     
     gui.setup();
     gui.add(numOfLevelsToDisplay.setup("Number of Octree Levels", 10, 1, 20));
@@ -62,7 +68,19 @@ void ofApp::draw(){
     
     ofEnableDepthTest();
     
-    cam.begin();
+    switch (currentView) {
+        case TRACKING_CAMERA:
+            trackingCam.begin();
+            break;
+        case ONBOARD_CAMERA:
+            onboardCam.begin();
+            break;
+        case EASY_CAM:
+        default:
+            easyCam.begin();
+            break;
+    }
+    
     ofPushMatrix();
     ofEnableLighting();
     
@@ -104,7 +122,19 @@ void ofApp::draw(){
     
     ofDisableLighting();
     ofPopMatrix();
-    cam.end();
+    
+    switch (currentView) {
+        case TRACKING_CAMERA:
+            trackingCam.end();
+            break;
+        case ONBOARD_CAMERA:
+            onboardCam.end();
+            break;
+        case EASY_CAM:
+        default:
+            easyCam.end();
+            break;
+    }
     
     glDepthMask(false);
     if (!hideGUI) gui.draw();
@@ -125,6 +155,15 @@ void ofApp::keyPressed(int key){
     
     ship.keyPressed(key);
     switch (key) {
+        case '1':
+            switchCameraView(TRACKING_CAMERA);
+            break;
+        case '2':
+            switchCameraView(ONBOARD_CAMERA);
+            break;
+        case '3':
+            switchCameraView(EASY_CAM);
+            break;
         case 'o':
             displayOctree = !displayOctree;
             break;
@@ -286,4 +325,20 @@ glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm) {
         return origin + distance * mouseDir;
     }
     return glm::vec3(0, 0, 0);
+}
+
+void ofApp::switchCameraView(CameraView view) {
+    currentView = view;
+    
+    switch(currentView){
+        case TRACKING_CAMERA:
+            easyCam.disableMouseInput();
+            break;
+        case ONBOARD_CAMERA:
+            easyCam.disableMouseInput();
+            break;
+        case EASY_CAM:
+            easyCam.enableMouseInput();
+            break;
+    }
 }
