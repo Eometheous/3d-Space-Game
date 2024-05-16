@@ -10,6 +10,7 @@
  The default constructor. These values get changed from the sliders.
  */
 CircularParticleEmitter::CircularParticleEmitter() {
+    ofDisableArbTex(); 
     // load textures
     //
     if (!ofLoadImage(particleTexture, "images/dot.png")) {
@@ -64,7 +65,12 @@ void CircularParticleEmitter::draw() {
     ofDrawCircle(0, 0, 0, radius);
     ofPopMatrix();
     
+    glDepthMask(GL_FALSE);
+
     ofSetColor(255, 100, 90);
+
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    ofEnablePointSprites();
     
     shader.begin();
     particleTexture.bind();
@@ -72,6 +78,15 @@ void CircularParticleEmitter::draw() {
     
     particleTexture.unbind();
     shader.end();
+    
+    ofDisablePointSprites();
+    ofDisableBlendMode();
+    ofEnableAlphaBlending();
+
+    // set back the depth mask
+    //
+    glDepthMask(GL_TRUE);
+
 }
 
 /**
@@ -103,8 +118,10 @@ void CircularParticleEmitter::setPosition(ofVec3f pos) {
     position.set(pos);
 }
 
-// load vertex buffer in preparation for rendering
-//
+/** 
+ load vertex buffer in preparation for rendering
+ code given by Keven Smith
+ */
 void CircularParticleEmitter::loadVBO() {
     if (particles.size() < 1) return;
 
