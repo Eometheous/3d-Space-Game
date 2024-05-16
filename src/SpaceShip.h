@@ -33,6 +33,8 @@ public:
     glm::vec3 velocity;
     glm::vec3 angularVelocity;
     float rotation = 0.0f;
+    
+    // Control Flags
     bool bMoveLeft = false;
     bool bMoveRight = false;
     bool bMoveForward = false;
@@ -41,9 +43,16 @@ public:
     bool bMoveDown = false;
     bool bRotateClockwiseKeyDown = false;
     bool bRotateCounterClockwiseKeyDown = false;
+    
+    // Force acting on the Space Ship
     glm::vec3 gravity;
     bool applyForce = false;
     bool touchingGround = false;
     glm::vec3 turbulenceForce();
+    
+    // Fuel-related variables
+    float fuel;
+    const float maxFuel = 120; // 2 minutes of fuel
+    bool thrustersOn;
 
 };
