@@ -117,6 +117,9 @@ void ofApp::draw(){
     ofPopMatrix();
     cam.end();
     
+    ofSetColor(ofColor::white);
+    ofDrawBitmapString("Fuel remaining: " + ofToString(ship.fuel, 1) + " seconds", ofGetWindowWidth() - 300, 15);
+    
     glDepthMask(false);
     if (!hideGUI) gui.draw();
     glDepthMask(true);
@@ -242,7 +245,7 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
@@ -282,7 +285,7 @@ void ofApp::initLightingAndMaterials() {
     glEnable(GL_LIGHT0);
 //    glEnable(GL_LIGHT1);
     glShadeModel(GL_SMOOTH);
-} 
+}
 
 glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm) {
     glm::vec3 origin = cam.getPosition();

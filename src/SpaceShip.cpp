@@ -15,19 +15,40 @@ SpaceShip::SpaceShip(){
     angularVelocity = glm::vec3(0, 0, 0);
     rotation = 0.0f;
     gravity = glm::vec3(0, -1.625f, 0); // Moon gravity
+    fuel = maxFuel;
+    thrustersOn = false;
 }
 
 glm::vec3 SpaceShip::heading() {
     glm::quat rotationQuat = glm::angleAxis(glm::radians(rotation), glm::vec3(0, 1, 0));
-    glm::vec3 defaultHeading(0, 1, 0);
+    glm::vec3 defaultHeading(0, 0, -1);
     return glm::normalize(rotationQuat * defaultHeading);
 }
 
 void SpaceShip::integrate() {
+    thrustersOn = bMoveForward || bMoveBackward || bMoveLeft || bMoveRight || bMoveUp || bMoveDown || bRotateClockwiseKeyDown || bRotateCounterClockwiseKeyDown;
+    
+    if (thrustersOn && fuel > 0) {
+        float deltaTime = ofGetLastFrameTime();
+        fuel -= deltaTime;
+    }
+    
+    if (fuel <= 0) {
+        fuel = 0;
+        // Disable thrusters
+        bMoveForward = false;
+        bMoveBackward = false;
+        bMoveLeft = false;
+        bMoveRight = false;
+        bMoveUp = false;
+        bMoveDown = false;
+        bRotateClockwiseKeyDown = false;
+        bRotateCounterClockwiseKeyDown = false;
+    }
     
     glm::vec3 headingDirection = heading();
-    glm::vec3 leftDirection = glm::normalize(glm::cross(glm::vec3(0, 0, 1), headingDirection));
-    glm::vec3 forwardDirection = glm::normalize(glm::cross(glm::vec3(1, 0, 0), headingDirection));
+    glm::vec3 leftDirection = glm::normalize(glm::cross(glm::vec3(0, 1, 0), headingDirection));
+    glm::vec3 upDirection = glm::normalize(glm::cross(headingDirection, leftDirection));
     
     if(bMoveLeft && !touchingGround) {
         acceleration += leftDirection * THRUST_FORCE;
@@ -38,19 +59,19 @@ void SpaceShip::integrate() {
     }
     
     if (bMoveForward && !touchingGround) {
-        acceleration += forwardDirection * THRUST_FORCE;
-    }
-    
-    if (bMoveBackward && !touchingGround) {
-        acceleration -= forwardDirection * THRUST_FORCE;
-    }
-    
-    if (bMoveUp) {
         acceleration += headingDirection * THRUST_FORCE;
     }
     
-    if (bMoveDown && !touchingGround) {
+    if (bMoveBackward && !touchingGround) {
         acceleration -= headingDirection * THRUST_FORCE;
+    }
+    
+    if (bMoveUp) {
+        acceleration += upDirection * THRUST_FORCE;
+    }
+    
+    if (bMoveDown && !touchingGround) {
+        acceleration -= upDirection * THRUST_FORCE;
     }
     
     float angularAcceleration = 0.0f;
