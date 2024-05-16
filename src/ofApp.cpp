@@ -42,8 +42,10 @@ void ofApp::update(){
     
     glm::vec3 shipPos = ship.position;
     glm::vec3 shipHeading = ship.heading();
-    lander.setPosition(shipPos.x, shipPos.y, shipPos.z);
-    lander.setRotation(0, ship.rotation, 0, 1, 0);
+    if (!bInDrag) {
+        lander.setPosition(shipPos.x, shipPos.y, shipPos.z);
+        lander.setRotation(0, ship.rotation, 0, 1, 0);
+    }
 }
 
 //--------------------------------------------------------------
@@ -165,6 +167,7 @@ void ofApp::mouseDragged(int x, int y, int button){
         
         landerPos += delta;
         lander.setPosition(landerPos.x, landerPos.y, landerPos.z);
+        ship.position = lander.getPosition();
         mousePrev = mousePos;
         
 //        glm::vec3 mouseCurrent = getMousePointOnPlane(dragPlanePoint, dragPlaneNormal);
