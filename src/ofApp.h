@@ -7,28 +7,34 @@
 #include "SpaceShip.h"
 #include <glm/gtx/intersect.hpp>
 
+// Camera views
+enum CameraView {
+    TRACKING_CAMERA,
+    ONBOARD_CAMERA,
+    EASY_CAM
+};
+
 class ofApp : public ofBaseApp{
 
-	public:
-		void setup() override;
-		void update() override;
-		void draw() override;
-		void exit() override;
+    public:
+        void setup() override;
+        void update() override;
+        void draw() override;
+        void exit() override;
 
-		void keyPressed(int key) override;
-		void keyReleased(int key) override;
-		void mouseMoved(int x, int y ) override;
-		void mouseDragged(int x, int y, int button) override;
-		void mousePressed(int x, int y, int button) override;
-		void mouseReleased(int x, int y, int button) override;
-		void mouseScrolled(int x, int y, float scrollX, float scrollY) override;
-		void mouseEntered(int x, int y) override;
-		void mouseExited(int x, int y) override;
-		void windowResized(int w, int h) override;
-		void dragEvent(ofDragInfo dragInfo) override;
-		void gotMessage(ofMessage msg) override;
+        void keyPressed(int key) override;
+        void keyReleased(int key) override;
+        void mouseMoved(int x, int y ) override;
+        void mouseDragged(int x, int y, int button) override;
+        void mousePressed(int x, int y, int button) override;
+        void mouseReleased(int x, int y, int button) override;
+        void mouseScrolled(int x, int y, float scrollX, float scrollY) override;
+        void mouseEntered(int x, int y) override;
+        void mouseExited(int x, int y) override;
+        void windowResized(int w, int h) override;
+        void dragEvent(ofDragInfo dragInfo) override;
+        void gotMessage(ofMessage msg) override;
     void initLightingAndMaterials();
-    ofEasyCam cam;
     ofLight light;
     ofxAssimpModelLoader terrain, lander;
     
@@ -60,4 +66,12 @@ class ofApp : public ofBaseApp{
     glm::vec3 dragPlanePoint;// Point on the drag plane
     glm::vec3 dragPlaneNormal;// Normal of the drag plane
     glm::vec3 getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm);
+    
+    // Camera
+    ofEasyCam easyCam;
+    ofCamera trackingCam;
+    ofCamera onboardCam;
+    CameraView currentView = EASY_CAM; // Default view
+    CameraView previousView = EASY_CAM;
+    void switchCameraView(CameraView view);
 };

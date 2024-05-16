@@ -13,9 +13,15 @@ void ofApp::setup(){
     
     octree.create(terrain.getMesh(0), 20);
 
-    // Set Lander Position at startup and have camera look at lander
-    cam.setPosition(0, 10, 20);
-    cam.lookAt(lander.getPosition());
+    // Set up Cameras
+    trackingCam.setPosition(0, 10, 20);
+    trackingCam.lookAt(lander.getPosition());
+    
+    onboardCam.setPosition(lander.getPosition());
+    onboardCam.lookAt(lander.getPosition() + ship.heading());
+    
+    easyCam.setPosition(0, 10, 20);
+    easyCam.lookAt(lander.getPosition());
     
     gui.setup();
     gui.add(numOfLevelsToDisplay.setup("Number of Octree Levels", 10, 1, 20));
@@ -55,6 +61,13 @@ void ofApp::update(){
         lander.setPosition(shipPos.x, shipPos.y, shipPos.z);
         lander.setRotation(0, ship.rotation, 0, 1, 0);
     }
+    
+    // Update cameras positions
+    trackingCam.setPosition(shipPos - shipHeading * 20.0f + glm::vec3(0, 10, 0));
+    trackingCam.lookAt(shipPos);
+    
+    onboardCam.setPosition(shipPos);
+    onboardCam.lookAt(shipPos + shipHeading);
 }
 
 //--------------------------------------------------------------
@@ -73,7 +86,19 @@ void ofApp::draw(){
     
     ofEnableDepthTest();
     
-    cam.begin();
+    switch (currentView) {
+        case TRACKING_CAMERA:
+            trackingCam.begin();
+            break;
+        case ONBOARD_CAMERA:
+            onboardCam.begin();
+            break;
+        case EASY_CAM:
+        default:
+            easyCam.begin();
+            break;
+    }
+    
     ofPushMatrix();
     ofEnableLighting();
     
@@ -115,7 +140,19 @@ void ofApp::draw(){
     
     ofDisableLighting();
     ofPopMatrix();
-    cam.end();
+    
+    switch (currentView) {
+        case TRACKING_CAMERA:
+            trackingCam.end();
+            break;
+        case ONBOARD_CAMERA:
+            onboardCam.end();
+            break;
+        case EASY_CAM:
+        default:
+            easyCam.end();
+            break;
+    }
     
     ofSetColor(ofColor::white);
     ofDrawBitmapString("Fuel remaining: " + ofToString(ship.fuel, 1) + " seconds", ofGetWindowWidth() - 300, 15);
@@ -136,6 +173,15 @@ void ofApp::keyPressed(int key){
     
     ship.keyPressed(key);
     switch (key) {
+        case '1':
+            switchCameraView(TRACKING_CAMERA);
+            break;
+        case '2':
+            switchCameraView(ONBOARD_CAMERA);
+            break;
+        case '3':
+            switchCameraView(EASY_CAM);
+            break;
         case 'o':
             displayOctree = !displayOctree;
             break;
@@ -144,10 +190,6 @@ void ofApp::keyPressed(int key){
             break;
         case 'b':
             hideLanderBounds = !hideLanderBounds;
-            break;
-        case 'c':
-            if(cam.getMouseInputEnabled()) cam.disableMouseInput();
-            else cam.enableMouseInput();
             break;
         default:
             break;
@@ -171,32 +213,26 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    if(cam.getMouseInputEnabled()) return;
+    if(easyCam.getMouseInputEnabled()) return;
     if (bInDrag) {
         glm::vec3 landerPos = lander.getPosition();
-        glm::vec3 mousePos = getMousePointOnPlane(landerPos, cam.getZAxis());
+        glm::vec3 mousePos = getMousePointOnPlane(landerPos, easyCam.getZAxis());
         glm::vec3 delta = mousePos - mousePrev;
         
         landerPos += delta;
         lander.setPosition(landerPos.x, landerPos.y, landerPos.z);
         ship.position = lander.getPosition();
         mousePrev = mousePos;
-        
-//        glm::vec3 mouseCurrent = getMousePointOnPlane(dragPlanePoint, dragPlaneNormal);
-//        glm::vec3 diff = mouseCurrent - mousePrev;
-//        glm::vec3 newPosition = lander.getPosition() + diff;
-//        lander.setPosition(newPosition.x, newPosition.y, newPosition.z);
-//        mousePrev = mouseCurrent;
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
     
-    if(cam.getMouseInputEnabled()) return;
+    if(easyCam.getMouseInputEnabled()) return;
     
-    glm::vec3 origin = cam.getPosition();
-    glm::vec3 mouseWorld = cam.screenToWorld(glm::vec3(mouseX, mouseY, 0));
+    glm::vec3 origin = easyCam.getPosition();
+    glm::vec3 mouseWorld = easyCam.screenToWorld(glm::vec3(mouseX, mouseY, 0));
     glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
     
     ofVec3f min = lander.getSceneMin() + lander.getPosition();
@@ -206,7 +242,7 @@ void ofApp::mousePressed(int x, int y, int button){
     bool hit = bounds.intersect(Ray(Vector3(origin.x, origin.y, origin.z), Vector3(mouseDir.x, mouseDir.y, mouseDir.z)), 0, 10000);
     if (hit) {
         bLanderSelected = true;
-        mouseDownPos = getMousePointOnPlane(lander.getPosition(), cam.getZAxis());
+        mouseDownPos = getMousePointOnPlane(lander.getPosition(), easyCam.getZAxis());
         mousePrev = mouseDownPos;
         bInDrag = true;
     } else {
@@ -288,8 +324,8 @@ void ofApp::initLightingAndMaterials() {
 }
 
 glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm) {
-    glm::vec3 origin = cam.getPosition();
-    glm::vec3 mouseWorld = cam.screenToWorld(glm::vec3(ofGetMouseX(), ofGetMouseY(), 0));
+    glm::vec3 origin = easyCam.getPosition();
+    glm::vec3 mouseWorld = easyCam.screenToWorld(glm::vec3(ofGetMouseX(), ofGetMouseY(), 0));
     glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
     float distance;
 
@@ -298,4 +334,31 @@ glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm) {
         return origin + distance * mouseDir;
     }
     return glm::vec3(0, 0, 0);
+}
+
+// Switch between different camera views
+void ofApp::switchCameraView(CameraView view) {
+    currentView = view;
+    
+    switch (currentView) {
+        case TRACKING_CAMERA:
+            easyCam.disableMouseInput();
+            break;
+        case ONBOARD_CAMERA:
+            easyCam.disableMouseInput();
+            break;
+        case EASY_CAM:
+            if (easyCam.getMouseInputEnabled()) {
+                easyCam.disableMouseInput();
+            } else {
+                // Set the easyCam's position and orientation based on the current camera
+                if (previousView != EASY_CAM){
+                    easyCam.setPosition(lander.getPosition() + glm::vec3(0, 10, 20));
+                    easyCam.lookAt(lander.getPosition());
+                }
+                easyCam.enableMouseInput();
+            }            break;
+    }
+    
+    previousView = currentView;
 }
