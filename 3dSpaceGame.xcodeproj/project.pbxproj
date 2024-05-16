@@ -12,6 +12,8 @@
 		075523792BF5868A00543AD8 /* box.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0755236F2BF5868A00543AD8 /* box.cc */; };
 		0755237A2BF5868A00543AD8 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523722BF5868A00543AD8 /* ofApp.cpp */; };
 		0755237B2BF5868A00543AD8 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523752BF5868A00543AD8 /* Util.cpp */; };
+		075523A72BF6854000543AD8 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523A52BF6854000543AD8 /* GameObject.cpp */; };
+		075523A82BF6854000543AD8 /* SpaceShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523A62BF6854000543AD8 /* SpaceShip.cpp */; };
 		"244DB92B-36B0-417F-9B25-EC569ABD6B92" /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "D7DC7175-BA8D-4223-8CEC-92D2A4814392" /* ofxSlider.cpp */; };
 		"2DFFE097-55D6-4698-8FEA-1869F394C447" /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "04CA7DE4-57CA-41C6-A6F5-DFE9CE9A362D" /* ofxSliderGroup.cpp */; };
 		"30233142-0BAB-4614-85B8-E0F71913ADFF" /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "6C2ABB8C-0129-4C27-AA26-A2DADF51D600" /* ofxPanel.cpp */; };
@@ -71,6 +73,10 @@
 		075523742BF5868A00543AD8 /* vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector3.h; sourceTree = "<group>"; };
 		075523752BF5868A00543AD8 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		075523762BF5868A00543AD8 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		075523A32BF6854000543AD8 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
+		075523A42BF6854000543AD8 /* SpaceShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceShip.h; sourceTree = "<group>"; };
+		075523A52BF6854000543AD8 /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
+		075523A62BF6854000543AD8 /* SpaceShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceShip.cpp; sourceTree = "<group>"; };
 		"07C91D97-432A-4C48-B9F4-C033A5F4A10A" /* mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = mesh.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/mesh.h; sourceTree = SOURCE_ROOT; };
 		"0E20E880-EF3E-46CA-834E-E2F136EDEDA4" /* Hash.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Hash.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/Hash.h; sourceTree = SOURCE_ROOT; };
 		"0F0A53BF-1D9C-4237-8A91-D25036717EF7" /* Profiler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Profiler.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/Profiler.h; sourceTree = SOURCE_ROOT; };
@@ -428,6 +434,10 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				075523A52BF6854000543AD8 /* GameObject.cpp */,
+				075523A32BF6854000543AD8 /* GameObject.h */,
+				075523A62BF6854000543AD8 /* SpaceShip.cpp */,
+				075523A42BF6854000543AD8 /* SpaceShip.h */,
 				0755236F2BF5868A00543AD8 /* box.cc */,
 				075523712BF5868A00543AD8 /* box.h */,
 				0755236C2BF5868A00543AD8 /* main.cpp */,
@@ -538,6 +548,7 @@
 				"BCE421E1-4874-41B0-9DF3-1BDAD576DDD1" /* ofxAssimpMeshHelper.cpp in Sources */,
 				"888E241C-8333-4C40-A490-A6156774295C" /* ofxAssimpModelLoader.cpp in Sources */,
 				"49EAD3A0-8C3B-43E6-A7DA-21CC4259F914" /* ofxAssimpTexture.cpp in Sources */,
+				075523A72BF6854000543AD8 /* GameObject.cpp in Sources */,
 				"45FF4A8D-0EF8-43B3-A8ED-FA15C47FB11A" /* ofxBaseGui.cpp in Sources */,
 				"F795CB1E-5077-4C7C-A2B8-FD6A61365247" /* ofxButton.cpp in Sources */,
 				075523792BF5868A00543AD8 /* box.cc in Sources */,
@@ -547,6 +558,7 @@
 				"C21D8DCB-AF3D-4B93-88BB-B2C0CF8313D1" /* ofxInputField.cpp in Sources */,
 				0755237B2BF5868A00543AD8 /* Util.cpp in Sources */,
 				"4077EE18-DC43-43CA-A22C-D9B0DEA7E0A0" /* ofxLabel.cpp in Sources */,
+				075523A82BF6854000543AD8 /* SpaceShip.cpp in Sources */,
 				"30233142-0BAB-4614-85B8-E0F71913ADFF" /* ofxPanel.cpp in Sources */,
 				"244DB92B-36B0-417F-9B25-EC569ABD6B92" /* ofxSlider.cpp in Sources */,
 				075523782BF5868A00543AD8 /* Octree.cpp in Sources */,
