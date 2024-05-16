@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
+#include "Octree.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -28,4 +30,16 @@ class ofApp : public ofBaseApp{
     ofLight light;
     ofxAssimpModelLoader terrain, lander;
     
+    // GUI
+    ofxPanel gui;
+    ofxIntSlider numOfLevelsToDisplay;
+    bool hideGUI;
+    
+    // Octree
+    bool displayOctree;
+    Octree octree;
+    Box boundingBox, landerBounds;
+    bool hideLanderBounds;
+    vector<TreeNode> colBoxList;
+    ofVec3f terrainNormalVec;
 };
