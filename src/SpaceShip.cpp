@@ -54,10 +54,10 @@ void SpaceShip::integrate() {
     }
     
     float angularAcceleration = 0.0f;
-    if(bRotateClockwiseKeyDown){
+    if(bRotateClockwiseKeyDown && !touchingGround){
         angularAcceleration -= ANGULAR_ACCELERATION;
     }
-    if (bRotateCounterClockwiseKeyDown) {
+    if (bRotateCounterClockwiseKeyDown && !touchingGround) {
         angularAcceleration += ANGULAR_ACCELERATION;
     }
     
