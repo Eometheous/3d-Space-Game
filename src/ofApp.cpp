@@ -21,6 +21,7 @@ void ofApp::setup(){
     gui.add(numOfLevelsToDisplay.setup("Number of Octree Levels", 10, 1, 20));
     hideGUI = false;
     
+    bBackgroundLoaded = backgroundImage.load("images/starfield-plain.jpg");
 }
 
 //--------------------------------------------------------------
@@ -41,13 +42,26 @@ void ofApp::update(){
     
     glm::vec3 shipPos = ship.position;
     glm::vec3 shipHeading = ship.heading();
-    lander.setPosition(shipPos.x, shipPos.y, shipPos.z);
-    lander.setRotation(0, ship.rotation, 0, 1, 0);
+    if (!bInDrag) {
+        lander.setPosition(shipPos.x, shipPos.y, shipPos.z);
+        lander.setRotation(0, ship.rotation, 0, 1, 0);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofBackground(ofColor::black);
+    // draw background image
+    //
+    if (bBackgroundLoaded) {
+        ofPushMatrix();
+        ofDisableDepthTest();
+        ofSetColor(50, 50, 50);
+        ofScale(2, 2);
+        backgroundImage.draw(-200, -100);
+        ofEnableDepthTest();
+        ofPopMatrix();
+    }
+    
     ofEnableDepthTest();
     
     cam.begin();
@@ -59,6 +73,18 @@ void ofApp::draw(){
     
     glm::vec3 pos = lander.getPosition();
     ofSetColor(ofColor::yellow);
+    
+    if (bLanderSelected) {
+
+        ofVec3f min = lander.getSceneMin() + lander.getPosition();
+        ofVec3f max = lander.getSceneMax() + lander.getPosition();
+
+        Box bounds = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
+        ofNoFill();
+        ofSetColor(ofColor::white);
+        Octree::drawBox(bounds);
+
+    }
     
     if (!hideLanderBounds) {
         ofNoFill();
@@ -107,6 +133,10 @@ void ofApp::keyPressed(int key){
         case 'b':
             hideLanderBounds = !hideLanderBounds;
             break;
+        case 'c':
+            if(cam.getMouseInputEnabled()) cam.disableMouseInput();
+            else cam.enableMouseInput();
+            break;
         default:
             break;
     }
@@ -129,17 +159,52 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    if(cam.getMouseInputEnabled()) return;
+    if (bInDrag) {
+        glm::vec3 landerPos = lander.getPosition();
+        glm::vec3 mousePos = getMousePointOnPlane(landerPos, cam.getZAxis());
+        glm::vec3 delta = mousePos - mousePrev;
+        
+        landerPos += delta;
+        lander.setPosition(landerPos.x, landerPos.y, landerPos.z);
+        ship.position = lander.getPosition();
+        mousePrev = mousePos;
+        
+//        glm::vec3 mouseCurrent = getMousePointOnPlane(dragPlanePoint, dragPlaneNormal);
+//        glm::vec3 diff = mouseCurrent - mousePrev;
+//        glm::vec3 newPosition = lander.getPosition() + diff;
+//        lander.setPosition(newPosition.x, newPosition.y, newPosition.z);
+//        mousePrev = mouseCurrent;
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+    
+    if(cam.getMouseInputEnabled()) return;
+    
+    glm::vec3 origin = cam.getPosition();
+    glm::vec3 mouseWorld = cam.screenToWorld(glm::vec3(mouseX, mouseY, 0));
+    glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
+    
+    ofVec3f min = lander.getSceneMin() + lander.getPosition();
+    ofVec3f max = lander.getSceneMax() + lander.getPosition();
 
+    Box bounds = Box(Vector3(min.x, min.y, min.z), Vector3(max.x, max.y, max.z));
+    bool hit = bounds.intersect(Ray(Vector3(origin.x, origin.y, origin.z), Vector3(mouseDir.x, mouseDir.y, mouseDir.z)), 0, 10000);
+    if (hit) {
+        bLanderSelected = true;
+        mouseDownPos = getMousePointOnPlane(lander.getPosition(), cam.getZAxis());
+        mousePrev = mouseDownPos;
+        bInDrag = true;
+    } else {
+        bLanderSelected = false;
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    bInDrag = false;
 }
 
 //--------------------------------------------------------------
@@ -210,3 +275,15 @@ void ofApp::initLightingAndMaterials() {
     glShadeModel(GL_SMOOTH);
 } 
 
+glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm) {
+    glm::vec3 origin = cam.getPosition();
+    glm::vec3 mouseWorld = cam.screenToWorld(glm::vec3(ofGetMouseX(), ofGetMouseY(), 0));
+    glm::vec3 mouseDir = glm::normalize(mouseWorld - origin);
+    float distance;
+
+    bool hit = glm::intersectRayPlane(origin, mouseDir, planePt, planeNorm, distance);
+    if (hit) {
+        return origin + distance * mouseDir;
+    }
+    return glm::vec3(0, 0, 0);
+}
