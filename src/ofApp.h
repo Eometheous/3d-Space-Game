@@ -4,6 +4,8 @@
 #include "ofxAssimpModelLoader.h"
 #include "Octree.h"
 #include "ofxGui.h"
+#include "SpaceShip.h"
+#include <glm/gtx/intersect.hpp>
 
 class ofApp : public ofBaseApp{
 
@@ -42,4 +44,20 @@ class ofApp : public ofBaseApp{
     bool hideLanderBounds;
     vector<TreeNode> colBoxList;
     ofVec3f terrainNormalVec;
+    
+    // SpaceShip object
+    SpaceShip ship;
+    
+    // Background
+    ofImage backgroundImage;
+    bool bBackgroundLoaded = false;
+    
+    // Dragging lander
+    bool bInDrag = false;
+    bool bLanderLoaded = false;
+    bool bLanderSelected = false;
+    glm::vec3 mousePrev, mouseDownPos;     // Previous mouse position
+    glm::vec3 dragPlanePoint;// Point on the drag plane
+    glm::vec3 dragPlaneNormal;// Normal of the drag plane
+    glm::vec3 getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm);
 };
