@@ -148,21 +148,9 @@ void Octree::create(const ofMesh & geo, int numLevels) {
     subdivide(mesh, root, numLevels, level);
 }
 
-
-//
-// subdivide:  recursive function to perform octree subdivision on a mesh
-//
-//  subdivide(node) algorithm:
-//     1) subdivide box in node into 8 equal side boxes - see helper function subDivideBox8().
-//     2) For each child box
-//            sort point data into each box  (see helper function getMeshFacesInBox())
-//        if a child box contains at list 1 point
-//            add child to tree
-//            if child is not a leaf node (contains more than 1 point)
-//               recursively call subdivide(child)
-//
-//
-             
+// Implemented by Jonathan Stewart Thomas
+// subdivides a mesh into smaller and smaller boxes until each box only contains 1 node, or it reaches the
+// number of levels specified.
 void Octree::subdivide(const ofMesh & mesh, TreeNode & node, int numLevels, int level) {
     if (level >= numLevels) return;
     
@@ -185,9 +173,10 @@ void Octree::subdivide(const ofMesh & mesh, TreeNode & node, int numLevels, int 
     }
 }
 
-// Implement functions below for Homework project
-//
-
+// Implemented by Jonathan Stewart Thomas
+// checks for ray intersection recursively until the ray either finds a box it colides with that contains only one node,
+// or until it reaches the specified number of levels. If it reaches the specified number of levels,
+// it will find the vertice that is closest to the ray.
 bool Octree::intersect(const Ray &ray, const TreeNode & node, TreeNode & nodeRtn, int numLevels, int level) {
     bool intersects = false;
     if (node.box.intersect(ray, 0, 1000)) {
@@ -228,6 +217,9 @@ bool Octree::intersect(const Ray &ray, const TreeNode & node, TreeNode & nodeRtn
     return intersects;
 }
 
+// Implemented by Jonathan Stewart Thomas
+// Checks for box intersection recursively. It returns all of the nodes that contain vertices
+// colliding with the box.
 bool Octree::intersect(const Box &box, TreeNode & node, vector<TreeNode> & boxListRtn) {
     bool intersects = false;
     if (box.overlap(node.box)) {
@@ -248,6 +240,8 @@ bool Octree::intersect(const Box &box, TreeNode & node, vector<TreeNode> & boxLi
     return intersects;
 }
 
+// Implemented by Jonathan Stewart Thomas
+// Draws the tree node bounding boxes recursively. The color changes with each level drawn.
 void Octree::draw(TreeNode & node, int numLevels, int level) {
     if (level >= numLevels) return;
     
@@ -260,13 +254,6 @@ void Octree::draw(TreeNode & node, int numLevels, int level) {
     for (int i = 0; i < node.children.size(); i++) {
         draw(node.children.at(i), numLevels, level + 1);
     }
-}
-
-// Optional
-//
-void Octree::drawLeafNodes(TreeNode & node) {
-
-
 }
 
 
