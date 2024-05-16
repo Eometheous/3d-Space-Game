@@ -29,19 +29,19 @@ void SpaceShip::integrate() {
     glm::vec3 leftDirection = glm::normalize(glm::cross(glm::vec3(0, 0, 1), headingDirection));
     glm::vec3 forwardDirection = glm::normalize(glm::cross(glm::vec3(1, 0, 0), headingDirection));
     
-    if(bMoveLeft){
+    if(bMoveLeft && !touchingGround) {
         acceleration += leftDirection * THRUST_FORCE;
     }
     
-    if (bMoveRight) {
+    if (bMoveRight && !touchingGround) {
         acceleration -= leftDirection * THRUST_FORCE;
     }
     
-    if (bMoveForward) {
+    if (bMoveForward && !touchingGround) {
         acceleration += forwardDirection * THRUST_FORCE;
     }
     
-    if (bMoveBackward) {
+    if (bMoveBackward && !touchingGround) {
         acceleration -= forwardDirection * THRUST_FORCE;
     }
     
@@ -49,7 +49,7 @@ void SpaceShip::integrate() {
         acceleration += headingDirection * THRUST_FORCE;
     }
     
-    if (bMoveDown) {
+    if (bMoveDown && !touchingGround) {
         acceleration -= headingDirection * THRUST_FORCE;
     }
     
