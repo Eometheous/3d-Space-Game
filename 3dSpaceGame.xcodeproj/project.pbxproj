@@ -19,6 +19,7 @@
 		"45FF4A8D-0EF8-43B3-A8ED-FA15C47FB11A" /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "E78C8DE0-50F0-4705-85E9-31ABAD91342C" /* ofxBaseGui.cpp */; };
 		"49EAD3A0-8C3B-43E6-A7DA-21CC4259F914" /* ofxAssimpTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "8DAF288D-B650-4CAE-BE5A-252FAE433C23" /* ofxAssimpTexture.cpp */; };
 		"667C17F4-D3F4-4CFE-82EA-3140BFAA0D61" /* ofxColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "F7FCE5C4-8D37-4D35-958F-F8B0980BA2D6" /* ofxColorPicker.cpp */; };
+		7BFF81BA2BF677CB004D7C04 /* SpaceShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BFF81B82BF677CB004D7C04 /* SpaceShip.cpp */; };
 		"888E241C-8333-4C40-A490-A6156774295C" /* ofxAssimpModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "0012A3EF-4553-43D7-986E-AFFC53002E64" /* ofxAssimpModelLoader.cpp */; };
 		"B1E2A071-6954-4B11-BD84-64251308A9BD" /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "AD8C552E-CB49-4580-934D-1E5CE5FC7E39" /* ofxGuiGroup.cpp */; };
 		"BCE421E1-4874-41B0-9DF3-1BDAD576DDD1" /* ofxAssimpMeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "AC8DF13B-D988-4768-96C7-C9C7439658DA" /* ofxAssimpMeshHelper.cpp */; };
@@ -113,6 +114,8 @@
 		"70CFFF84-3CD1-4170-B41A-148E9EF5E100" /* vector2.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vector2.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/vector2.h; sourceTree = SOURCE_ROOT; };
 		"7428CFEF-4E2B-446D-84B3-8DC6C1939041" /* ofxAssimpTexture.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxAssimpTexture.h; path = ../../../addons/ofxAssimpModelLoader/src/ofxAssimpTexture.h; sourceTree = SOURCE_ROOT; };
 		"785478CD-E9A1-411C-A4AD-6271534CBBCF" /* vector3.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vector3.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/vector3.h; sourceTree = SOURCE_ROOT; };
+		7BFF81B82BF677CB004D7C04 /* SpaceShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpaceShip.cpp; path = ../../../../oF/of_v0.12.0_osx_release/apps/myApps/3DSpaceGame/src/SpaceShip.cpp; sourceTree = "<group>"; };
+		7BFF81B92BF677CB004D7C04 /* SpaceShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpaceShip.h; path = ../../../../oF/of_v0.12.0_osx_release/apps/myApps/3DSpaceGame/src/SpaceShip.h; sourceTree = "<group>"; };
 		"7FA6D21C-2029-4EE6-86FE-CD9ADB5DD0A1" /* matrix4x4.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = matrix4x4.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/matrix4x4.h; sourceTree = SOURCE_ROOT; };
 		"830CD04A-50B0-4630-B2DB-99B16F803406" /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = version.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/version.h; sourceTree = SOURCE_ROOT; };
 		"8685A114-41A5-4ED8-A33C-F460439C4F9D" /* ofxInputField.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxInputField.h; path = ../../../addons/ofxGui/src/ofxInputField.h; sourceTree = SOURCE_ROOT; };
@@ -428,6 +431,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7BFF81B82BF677CB004D7C04 /* SpaceShip.cpp */,
+				7BFF81B92BF677CB004D7C04 /* SpaceShip.h */,
 				0755236F2BF5868A00543AD8 /* box.cc */,
 				075523712BF5868A00543AD8 /* box.h */,
 				0755236C2BF5868A00543AD8 /* main.cpp */,
@@ -548,6 +553,7 @@
 				0755237B2BF5868A00543AD8 /* Util.cpp in Sources */,
 				"4077EE18-DC43-43CA-A22C-D9B0DEA7E0A0" /* ofxLabel.cpp in Sources */,
 				"30233142-0BAB-4614-85B8-E0F71913ADFF" /* ofxPanel.cpp in Sources */,
+				7BFF81BA2BF677CB004D7C04 /* SpaceShip.cpp in Sources */,
 				"244DB92B-36B0-417F-9B25-EC569ABD6B92" /* ofxSlider.cpp in Sources */,
 				075523782BF5868A00543AD8 /* Octree.cpp in Sources */,
 				"2DFFE097-55D6-4698-8FEA-1869F394C447" /* ofxSliderGroup.cpp in Sources */,
