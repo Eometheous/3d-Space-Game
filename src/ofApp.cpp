@@ -11,6 +11,8 @@ void ofApp::setup(){
     lander.loadModel("spaceship/SpaceShipV2.fbx");
     lander.setScaleNormalization(false);
     
+    thrusterSound.load("sounds/Thrusters.wav");
+    
     octree.create(terrain.getMesh(0), 20);
 
     // Set up Cameras
@@ -64,6 +66,9 @@ void ofApp::update(){
             explosion.explode(ship.position, terrainNormalVec.normalize());
             ofVec3f randomForce(ofRandom(-5000, 5000), ofRandom(5000, 10000), ofRandom(-5000, 5000));
             ship.acceleration += randomForce;
+            ship.dead = true;
+            switchCameraView(EASY_CAM);
+            
         } else if (vec3.length() <= 2 && !explosion.exploding){
             
             // Check if the lander is in any landing area
@@ -96,9 +101,13 @@ void ofApp::update(){
     explosion.update();
     
     if (ship.bMoveUp || ship.bMoveDown || ship.bMoveLeft || ship.bMoveRight || ship.bMoveForward || ship.bMoveBackward || ship.bRotateClockwiseKeyDown || ship.bRotateCounterClockwiseKeyDown) {
+        if (!thrusterSound.isPlaying() && !ship.dead) {
+            thrusterSound.play();
+        }
         ship.landerExhaust.spawningParticles = true;
     }
     else {
+        thrusterSound.stop();
         ship.landerExhaust.spawningParticles = false;
     }
     

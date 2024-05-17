@@ -57,4 +57,6 @@ public:
 
     // particle emitter
     CircularParticleEmitter landerExhaust;
+    
+    bool dead;
 };

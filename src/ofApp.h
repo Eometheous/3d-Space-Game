@@ -80,6 +80,9 @@ class ofApp : public ofBaseApp{
     // altitude scensor
     float altitude;
     float getAltitude();
+    
+    // sounds
+    ofSoundPlayer thrusterSound;
 
     // Lighting
     void initLightingAndMaterials();
