@@ -78,4 +78,8 @@ class ofApp : public ofBaseApp{
     
     // explosion
     Explosion explosion;
+    
+    // altitude scensor
+    float altitude;
+    float getAltitude();
 };
