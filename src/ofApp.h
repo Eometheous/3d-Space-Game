@@ -35,8 +35,6 @@ class ofApp : public ofBaseApp{
         void windowResized(int w, int h) override;
         void dragEvent(ofDragInfo dragInfo) override;
         void gotMessage(ofMessage msg) override;
-    void initLightingAndMaterials();
-    ofLight light;
     ofxAssimpModelLoader terrain, lander;
     
     // GUI
@@ -82,4 +80,9 @@ class ofApp : public ofBaseApp{
     // altitude scensor
     float altitude;
     float getAltitude();
+
+    // Lighting
+    void initLightingAndMaterials();
+    ofLight landingLight1, landingLight2, landingLight3, landingLight4, shipLight, backgroundLight;
+    bool shipLightOn;
 };
