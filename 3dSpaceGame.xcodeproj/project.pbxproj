@@ -16,6 +16,7 @@
 		075523A82BF6854000543AD8 /* SpaceShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523A62BF6854000543AD8 /* SpaceShip.cpp */; };
 		075523AE2BF6A82900543AD8 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523AC2BF6A82900543AD8 /* Particle.cpp */; };
 		075523B12BF6AE5200543AD8 /* CircularParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523AF2BF6AE5200543AD8 /* CircularParticleEmitter.cpp */; };
+		075523B42BF6C44300543AD8 /* Explosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075523B22BF6C44300543AD8 /* Explosion.cpp */; };
 		"244DB92B-36B0-417F-9B25-EC569ABD6B92" /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "D7DC7175-BA8D-4223-8CEC-92D2A4814392" /* ofxSlider.cpp */; };
 		"2DFFE097-55D6-4698-8FEA-1869F394C447" /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "04CA7DE4-57CA-41C6-A6F5-DFE9CE9A362D" /* ofxSliderGroup.cpp */; };
 		"30233142-0BAB-4614-85B8-E0F71913ADFF" /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "6C2ABB8C-0129-4C27-AA26-A2DADF51D600" /* ofxPanel.cpp */; };
@@ -83,6 +84,8 @@
 		075523AD2BF6A82900543AD8 /* Particle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Particle.hpp; sourceTree = "<group>"; };
 		075523AF2BF6AE5200543AD8 /* CircularParticleEmitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CircularParticleEmitter.cpp; sourceTree = "<group>"; };
 		075523B02BF6AE5200543AD8 /* CircularParticleEmitter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CircularParticleEmitter.hpp; sourceTree = "<group>"; };
+		075523B22BF6C44300543AD8 /* Explosion.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Explosion.cpp; sourceTree = "<group>"; };
+		075523B32BF6C44300543AD8 /* Explosion.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Explosion.hpp; sourceTree = "<group>"; };
 		"07C91D97-432A-4C48-B9F4-C033A5F4A10A" /* mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = mesh.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/mesh.h; sourceTree = SOURCE_ROOT; };
 		"0E20E880-EF3E-46CA-834E-E2F136EDEDA4" /* Hash.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Hash.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/Hash.h; sourceTree = SOURCE_ROOT; };
 		"0F0A53BF-1D9C-4237-8A91-D25036717EF7" /* Profiler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Profiler.h; path = ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/Profiler.h; sourceTree = SOURCE_ROOT; };
@@ -459,6 +462,8 @@
 				075523B02BF6AE5200543AD8 /* CircularParticleEmitter.hpp */,
 				075523AC2BF6A82900543AD8 /* Particle.cpp */,
 				075523AD2BF6A82900543AD8 /* Particle.hpp */,
+				075523B22BF6C44300543AD8 /* Explosion.cpp */,
+				075523B32BF6C44300543AD8 /* Explosion.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -577,6 +582,7 @@
 				"2DFFE097-55D6-4698-8FEA-1869F394C447" /* ofxSliderGroup.cpp in Sources */,
 				0755237A2BF5868A00543AD8 /* ofApp.cpp in Sources */,
 				"D086FF54-BF91-4CAE-B9BA-D2D9401DFC84" /* ofxToggle.cpp in Sources */,
+				075523B42BF6C44300543AD8 /* Explosion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
