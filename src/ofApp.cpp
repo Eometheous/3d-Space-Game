@@ -50,7 +50,6 @@ void ofApp::update(){
         if (ship.applyForce && ship.velocity.length() > 2 && !explosion.exploding) {
             explosion.reset();
             explosion.explode(ship.position, terrainNormalVec.normalize());
-            cout << "EXPLODING!" << endl;
         }
         ship.touchingGround = true;
         ship.velocity = ofVec3f(0,0);
