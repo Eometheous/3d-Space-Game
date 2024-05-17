@@ -33,7 +33,7 @@ void SpaceShip::integrate() {
         fuel -= deltaTime;
     }
     
-    if (fuel <= 0) {
+    if (fuel <= 0 || dead) {
         fuel = 0;
         // Disable thrusters
         bMoveForward = false;
