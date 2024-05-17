@@ -53,7 +53,7 @@ void Particle::integrate() {
  */
 void Particle::draw() {
     ofSetColor(ofColor::yellow);
-    ofDrawSphere(position, .01);
+    ofDrawSphere(position, 1);
 }
 
 /**

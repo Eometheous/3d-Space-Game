@@ -18,8 +18,6 @@ public:
     float age;
     float birthTime;
     
-    ofShader shader;
-    
     Particle();
     Particle(ofVec3f position, ofVec3f force);
     
