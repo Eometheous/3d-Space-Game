@@ -6,6 +6,7 @@
 #include "ofxGui.h"
 #include "SpaceShip.h"
 #include <glm/gtx/intersect.hpp>
+#include "Explosion.hpp"
 
 // Camera views
 enum CameraView {
@@ -74,4 +75,7 @@ class ofApp : public ofBaseApp{
     CameraView currentView = EASY_CAM; // Default view
     CameraView previousView = EASY_CAM;
     void switchCameraView(CameraView view);
+    
+    // explosion
+    Explosion explosion;
 };

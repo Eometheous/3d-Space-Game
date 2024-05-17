@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "ofMain.h"
+#include "CircularParticleEmitter.hpp"
 
 #define THRUST_FORCE 10.0f
 #define ROTATION_SPEED 90.0f
@@ -55,4 +55,6 @@ public:
     const float maxFuel = 120; // 2 minutes of fuel
     bool thrustersOn;
 
+    // particle emitter
+    CircularParticleEmitter landerExhaust;
 };
