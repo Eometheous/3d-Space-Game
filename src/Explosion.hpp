@@ -20,7 +20,9 @@ public:
     float explodedAtTime;
     float radius;
     
-    ofSoundPlayer explosion;
+    ofSoundPlayer explosionSound1;
+    ofSoundPlayer explosionSound2;
+    ofSoundPlayer explosionSound3;
     
     // shaders
     ofVbo vbo;

@@ -29,8 +29,10 @@ Explosion::Explosion() {
     for (int i = 0; i < 5000; i++) {
         explosionParticles.push_back(new Particle());
     }
-    explosion.load("sounds/Explosion3.wav");
-    explosion.setVolume(.1);
+    explosionSound1.load("sounds/Explosion1.wav");
+    explosionSound2.load("sounds/Explosion2.wav");
+    explosionSound3.load("sounds/Explosion3.wav");
+    
     radius = 100;
 }
 
@@ -87,7 +89,9 @@ void Explosion::explode(ofVec3f at, ofVec3f initialVelocity) {
     }
     exploding = true;
     explodedAtTime = ofGetElapsedTimeMillis();
-    explosion.play();
+    explosionSound1.play();
+    explosionSound2.play();
+    explosionSound3.play();
 }
 
 /**
