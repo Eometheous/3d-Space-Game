@@ -26,7 +26,6 @@ public:
     bool spawningParticles;
     
     // shaders
-    //
     ofVbo vbo;
     ofShader shader;
     ofTexture particleTexture;

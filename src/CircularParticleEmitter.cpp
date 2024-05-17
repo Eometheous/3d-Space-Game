@@ -129,7 +129,7 @@ void CircularParticleEmitter::loadVBO() {
     vector<ofVec3f> points;
     for (int i = 0; i < particles.size(); i++) {
         points.push_back(particles[i].position);
-        sizes.push_back(ofVec3f(radius));
+        sizes.push_back(ofVec3f(10));
     }
     // upload the data to the vbo
     //
