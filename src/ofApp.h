@@ -85,4 +85,16 @@ class ofApp : public ofBaseApp{
     void initLightingAndMaterials();
     ofLight landingLight1, landingLight2, landingLight3, landingLight4, shipLight, backgroundLight;
     bool shipLightOn;
+    
+    // Define landing areas
+    Box landingArea1;
+    Box landingArea2;
+    Box landingArea3;
+    Box landingArea4;
+    Box landingArea5;
+    void checkLandingArea();
+    
+    bool hideBoundBox = false;
+    
+    string winningMsg;
 };
