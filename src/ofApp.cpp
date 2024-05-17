@@ -46,8 +46,10 @@ void ofApp::update(){
     }
     terrainNormalVec.normalize().scale(10);
     
+    ofVec3f vec3 = ship.velocity;
+    
     if (terrainNormalVec.length() > 0) {
-        if (ship.applyForce && ship.velocity.length() > 2 && !explosion.exploding) {
+        if (ship.applyForce && vec3.length() > 2 && !explosion.exploding) {
             explosion.reset();
             explosion.explode(ship.position, terrainNormalVec.normalize());
         }
@@ -58,6 +60,8 @@ void ofApp::update(){
     else {
         ship.touchingGround = false;
     }
+    
+    altitude = getAltitude() - 2.5;
     
     ship.integrate();
     ship.landerExhaust.setPosition(ship.position - ofVec3f(0, 1.8, 0));
@@ -84,6 +88,25 @@ void ofApp::update(){
     
     onboardCam.setPosition(shipPos);
     onboardCam.lookAt(shipPos + shipHeading);
+}
+
+float ofApp::getAltitude() {
+    ofVec3f pointRet;
+    ofVec3f mouse(mouseX, mouseY);
+    ofVec3f rayPoint = lander.getPosition();
+    ofVec3f rayDir = ofVec3f(0, -1, 0);
+    rayDir.normalize();
+    Ray ray = Ray(Vector3(rayPoint.x, rayPoint.y, rayPoint.z),
+        Vector3(rayDir.x, rayDir.y, rayDir.z));
+    
+    TreeNode selectedNode;
+    bool pointSelected = octree.intersect(ray, octree.root, selectedNode, 20, 1);
+
+    if (pointSelected) {
+        pointRet = octree.mesh.getVertex(selectedNode.points[0]);
+    }
+    
+    return lander.getPosition().y - pointRet.y;
 }
 
 //--------------------------------------------------------------
@@ -175,6 +198,9 @@ void ofApp::draw(){
     
     ofSetColor(ofColor::white);
     ofDrawBitmapString("Fuel remaining: " + ofToString(ship.fuel, 1) + " seconds", ofGetWindowWidth() - 300, 15);
+    ofDrawBitmapString("Altitude: " + ofToString(altitude, 1), ofGetWindowWidth() - 300, 30);
+    ofVec3f vec3 = ship.velocity;
+    ofDrawBitmapString("Speed: " + ofToString(vec3.length(), 1), ofGetWindowWidth() - 300, 45);
     
     glDepthMask(false);
     if (!hideGUI) gui.draw();
