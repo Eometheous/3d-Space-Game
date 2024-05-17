@@ -1,0 +1,43 @@
+=============
+Danny Garcia:
+=============
+Terrain Model
+Ability to drag lander around
+Multi-camera system
+-  tracking camera
+-  onboard camera
+-  standard easy camera
+Lighting
+-  lighting for the lander
+-  lighting for the landing areas
+-  lighting for the environment
+Physics for the lander
+Landing on landing area
+-  created the three landing boxes
+2 minutes of fuel counter
+UI
+-  UI for fuel count
+-  UI for win screen
+
+================
+Jonathan Thomas:
+================
+Ship Model
+Sounds
+-  Explosion1
+-  Explosion2
+-  Explosion3
+-  Thruster
+Terrain collision detection and resolution
+-  octree subdivision implemenation
+-  explosion when landing too fast
+-  ground detection
+-  Elevation sensor
+Particle system
+-  shader rendering of particles
+-  spherical explosion system
+-  thuster exhaust particle system
+UI
+-  speed UI
+-  elevation UI
+
