@@ -32,6 +32,12 @@ void ofApp::setup(){
     ship.position = ofVec3f(0,6,0);
     
     shipLightOn = false;
+    
+    landingArea1 = Box(Vector3(-35, 2.68, -77), Vector3(5, 10.68, -37));
+    landingArea2 = Box(Vector3(-211.6, 18.3, -275.26), Vector3(-171.6, 26.3, -235.26));
+    landingArea3 = Box(Vector3(-139.71, -4.52, 192.78), Vector3(-79.71, 2.52, 252.78));
+    landingArea4 = Box(Vector3(146.96, 0.64, 154.16), Vector3(186.96, 8.64, 194.16));
+    landingArea5 = Box(Vector3(251.43, 32.91, 16.65), Vector3(281.43, 40.91, 46.65));
 
 }
 
@@ -50,15 +56,33 @@ void ofApp::update(){
     terrainNormalVec.normalize().scale(10);
     
     ofVec3f vec3 = ship.velocity;
+
     
     if (terrainNormalVec.length() > 0) {
         if (ship.applyForce && vec3.length() > 2 && !explosion.exploding) {
             explosion.reset();
             explosion.explode(ship.position, terrainNormalVec.normalize());
+            ofVec3f randomForce(ofRandom(-5000, 5000), ofRandom(5000, 10000), ofRandom(-5000, 5000));
+            ship.acceleration += randomForce;
+        } else if (vec3.length() <= 2 && !explosion.exploding){
+            
+            // Check if the lander is in any landing area
+            if (landingArea1.overlap(landerBounds)) {
+                winningMsg = "You win! Landed in landing area 1!";
+            } else if (landingArea2.overlap(landerBounds)) {
+                winningMsg = "You win! Landed in landing area 2!";
+            } else if (landingArea3.overlap(landerBounds)) {
+                winningMsg = "You win! Landed in landing area 3!";
+            } else if (landingArea4.overlap(landerBounds)) {
+                winningMsg = "You win! Landed in landing area 4!";
+            } else if (landingArea5.overlap(landerBounds)) {
+                winningMsg = "You win! Landed in landing area 5!";
+            }
         }
         ship.touchingGround = true;
         ship.velocity = ofVec3f(0,0);
         ship.applyForce = false;
+        
     }
     else {
         ship.touchingGround = false;
@@ -177,10 +201,19 @@ void ofApp::draw(){
 
     }
     
-    if (!hideLanderBounds) {
+    if (!hideBoundBox) {
         ofNoFill();
         ofSetColor(ofColor::white);
         octree.drawBox(landerBounds);
+        
+        // Uncomment to check the landing areas
+        ofSetColor(ofColor::green);
+        Octree::drawBox(landingArea1);
+        Octree::drawBox(landingArea2);
+        Octree::drawBox(landingArea3);
+        Octree::drawBox(landingArea4);
+        Octree::drawBox(landingArea5);
+        
         // draw colliding boxes
         //
         ofSetColor(ofColor::red);
@@ -217,6 +250,12 @@ void ofApp::draw(){
     ofVec3f vec3 = ship.velocity;
     ofDrawBitmapString("Speed: " + ofToString(vec3.length(), 1), ofGetWindowWidth() - 300, 45);
     
+    // Display the winning message
+    if (!winningMsg.empty()) {
+        ofSetColor(ofColor::blue);
+        ofDrawBitmapString(winningMsg, ofGetWidth() / 2 - winningMsg.size() * 4, ofGetHeight() / 2);
+    }
+    
     glDepthMask(false);
     if (!hideGUI) gui.draw();
     glDepthMask(true);
@@ -249,7 +288,7 @@ void ofApp::keyPressed(int key){
             hideGUI = !hideGUI;
             break;
         case 'b':
-            hideLanderBounds = !hideLanderBounds;
+            hideBoundBox = !hideBoundBox;
             break;
         case 'l':
             shipLightOn = !shipLightOn;
@@ -460,3 +499,4 @@ void ofApp::switchCameraView(CameraView view) {
     
     previousView = currentView;
 }
+
