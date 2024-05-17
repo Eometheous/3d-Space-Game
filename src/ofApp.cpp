@@ -28,6 +28,8 @@ void ofApp::setup(){
     hideGUI = false;
     
     bBackgroundLoaded = backgroundImage.load("images/starfield-plain.jpg");
+    
+    ship.position = ofVec3f(0,10,0);
 }
 
 //--------------------------------------------------------------
@@ -45,6 +47,11 @@ void ofApp::update(){
     terrainNormalVec.normalize().scale(10);
     
     if (terrainNormalVec.length() > 0) {
+        if (ship.applyForce && ship.velocity.length() > 2 && !explosion.exploding) {
+            explosion.reset();
+            explosion.explode(ship.position, terrainNormalVec.normalize());
+            cout << "EXPLODING!" << endl;
+        }
         ship.touchingGround = true;
         ship.velocity = ofVec3f(0,0);
         ship.applyForce = false;
@@ -56,6 +63,7 @@ void ofApp::update(){
     ship.integrate();
     ship.landerExhaust.setPosition(ship.position - ofVec3f(0, 1.8, 0));
     ship.landerExhaust.update();
+    explosion.update();
     
     if (ship.bMoveUp || ship.bMoveDown || ship.bMoveLeft || ship.bMoveRight || ship.bMoveForward || ship.bMoveBackward || ship.bRotateClockwiseKeyDown || ship.bRotateCounterClockwiseKeyDown) {
         ship.landerExhaust.spawningParticles = true;
@@ -115,6 +123,7 @@ void ofApp::draw(){
     lander.drawFaces();
     
     ship.landerExhaust.draw();
+    explosion.draw();
     
     glm::vec3 pos = lander.getPosition();
     ofSetColor(ofColor::yellow);
