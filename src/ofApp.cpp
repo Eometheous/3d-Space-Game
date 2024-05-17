@@ -3,6 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     // Set up lighting and load object models
     initLightingAndMaterials();
     
@@ -29,7 +30,10 @@ void ofApp::setup(){
     
     bBackgroundLoaded = backgroundImage.load("images/starfield-plain.jpg");
     
-    ship.position = ofVec3f(0,10,0);
+    ship.position = ofVec3f(0,6,0);
+    
+    shipLightOn = false;
+
 }
 
 //--------------------------------------------------------------
@@ -84,6 +88,12 @@ void ofApp::update(){
     
     onboardCam.setPosition(shipPos);
     onboardCam.lookAt(shipPos + shipHeading);
+    
+    if (shipLightOn) {
+        shipLight.setPosition(ship.position.x, ship.position.y + 30, ship.position.z);
+        shipLight.lookAt(ship.position);
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -117,6 +127,12 @@ void ofApp::draw(){
     
     ofPushMatrix();
     ofEnableLighting();
+    
+    if (shipLightOn) {
+        shipLight.enable();
+    } else {
+        shipLight.disable();
+    }
     
     terrain.drawFaces();
     lander.drawFaces();
@@ -209,6 +225,9 @@ void ofApp::keyPressed(int key){
             break;
         case 'b':
             hideLanderBounds = !hideLanderBounds;
+            break;
+        case 'l':
+            shipLightOn = !shipLightOn;
             break;
         default:
             break;
@@ -309,37 +328,72 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 //
 void ofApp::initLightingAndMaterials() {
 
-    static float ambient[] =
-    { .5f, .5f, .5, 1.0f };
-    static float diffuse[] =
-    { 1.0f, 1.0f, 1.0f, 1.0f };
-
-    static float position[] =
-    {5.0, 5.0, 5.0, 0.0 };
-
-    static float lmodel_ambient[] =
-    { 1.0f, 1.0f, 1.0f, 1.0f };
-
-    static float lmodel_twoside[] =
-    { GL_TRUE };
-
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, position);
-
-    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
-    glLightfv(GL_LIGHT1, GL_POSITION, position);
-
-
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
-    glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE, lmodel_twoside);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-//    glEnable(GL_LIGHT1);
-    glShadeModel(GL_SMOOTH);
+    backgroundLight.setup();
+    backgroundLight.setAmbientColor(ofFloatColor(0.5f, 0.5f, 0.5f));
+    backgroundLight.setDiffuseColor(ofFloatColor(4.0f, 4.0f, 4.0f));
+    backgroundLight.setSpecularColor(ofFloatColor(4.0f, 4.0f, 4.0f));
+    backgroundLight.setPosition(20.0f, 20.0f, 20.0f);
+    backgroundLight.enable();
+    
+    // Initialize and set up the landing light
+    landingLight1.setup();
+    landingLight1.setSpotlight();
+    landingLight1.setScale(.1);
+    landingLight1.setSpotlightCutOff(45);
+    landingLight1.setAttenuation(2, .001, .001);
+    landingLight1.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
+    landingLight1.setDiffuseColor(ofFloatColor(20, 20, 20));
+    landingLight1.setSpecularColor(ofFloatColor(10, 10, 10));
+    landingLight1.setPosition(-15, 40, -57);
+    landingLight1.lookAt(glm::vec3(-15, 0, -57)); // Point the light downwards towards the landing area
+    landingLight1.enable();
+    
+    landingLight2.setup();
+    landingLight2.setSpotlight();
+    landingLight2.setScale(.1);
+    landingLight2.setSpotlightCutOff(45);
+    landingLight2.setAttenuation(2, .001, .001);
+    landingLight2.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
+    landingLight2.setDiffuseColor(ofFloatColor(20, 20, 20));
+    landingLight2.setSpecularColor(ofFloatColor(10, 10, 10));
+    landingLight2.setPosition(-191.6, 40, -255.26);
+    landingLight2.lookAt(glm::vec3(-191.6, 0, -255.26)); // Point the light downwards towards the landing area
+    landingLight2.enable();
+    
+    landingLight3.setup();
+    landingLight3.setSpotlight();
+    landingLight3.setScale(.1);
+    landingLight3.setSpotlightCutOff(45);
+    landingLight3.setAttenuation(2, .001, .001);
+    landingLight3.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
+    landingLight3.setDiffuseColor(ofFloatColor(20, 20, 20));
+    landingLight3.setSpecularColor(ofFloatColor(10, 10, 10));
+    landingLight3.setPosition(-109.71, 40, 222.78);
+    landingLight3.lookAt(glm::vec3(-109.71, 0, 222.78)); // Point the light downwards towards the landing area
+    landingLight3.enable();
+    
+    landingLight4.setup();
+    landingLight4.setSpotlight();
+    landingLight4.setScale(.1);
+    landingLight4.setSpotlightCutOff(45);
+    landingLight4.setAttenuation(2, .001, .001);
+    landingLight4.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
+    landingLight4.setDiffuseColor(ofFloatColor(20, 20, 20));
+    landingLight4.setSpecularColor(ofFloatColor(10, 10, 10));
+    landingLight4.setPosition(166.96, 40, 174.16);
+    landingLight4.lookAt(glm::vec3(166.96, 0, 174.16)); // Point the light downwards towards the landing area
+    landingLight4.enable();
+    
+    // Ship Light
+    shipLight.setup();
+    shipLight.setSpotlight();
+    shipLight.setScale(0.1);
+    shipLight.setSpotlightCutOff(15);
+    shipLight.setAttenuation(2, 0.001, 0.001);
+    shipLight.setAmbientColor(ofFloatColor(0.1, 0.1, 0.1));
+    shipLight.setDiffuseColor(ofFloatColor(10, 10, 10));
+    shipLight.setSpecularColor(ofFloatColor(5, 5, 5));
+    shipLight.setPosition(ship.position.x, ship.position.y + 30, ship.position.z);
 }
 
 glm::vec3 ofApp::getMousePointOnPlane(glm::vec3 planePt, glm::vec3 planeNorm) {
